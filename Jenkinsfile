@@ -23,7 +23,7 @@ pipeline {
     }
 
     stage('Build') {
-      paralled {
+      paralle {
         stage('Java') {
           steps {
             dir('backend') {
@@ -53,7 +53,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-        srcript {
+        script {
           sh 'cd backend && mvn test'
         }
       }
