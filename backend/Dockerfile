@@ -1,12 +1,30 @@
-FROM ubuntu:latest
+# Use Maven 3.9.9 with OpenJDK 21 as the build image
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
-FROM maven:3.9.9-eclipse-temurin-21-alpine AS BUILD
+# Set working directory
 WORKDIR /app
-COPY . /app
-RUN mvn clean package 
 
-FROM openjdk:21-jdk-slim
+# Copy all files and download dependencies (caching)
+COPY pom.xml .
+RUN mvn dependency:go-offline
+
+# Copy source files
+COPY . .
+
+# Package the application
+RUN mvn clean package -DskipTests
+
+# Use a lightweight JDK image to run the application
+FROM eclipse-temurin:21-jdk-alpine
+
+# Set working directory
 WORKDIR /app
-COPY --from=BUILD /app/target/*.jar productApp.jar
-EXPOSE 9876
-ENTRYPOINT ["java", "-jar", "productApp.jar"]
+
+# Copy the jar file from the build image
+COPY --from=build /app/target/*.jar app.jar
+
+# Expose port 8080 (or whatever port your app runs on)
+EXPOSE 8080
+
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "app.jar"]
