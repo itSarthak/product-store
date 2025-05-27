@@ -23,7 +23,7 @@ pipeline {
     }
 
     stage('Build') {
-      paralle {
+      parallel {
         stage('Java') {
           steps {
             dir('backend') {
