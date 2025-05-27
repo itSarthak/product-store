@@ -1,6 +1,6 @@
 FROM ubuntu:latest
 
-FROM maven:3.9.9-openjdk-21 AS BUILD
+FROM maven:3.9.9-eclipse-temurin-21-alpine AS BUILD
 WORKDIR /app
 COPY backend /app
 RUN mvn clean package 
