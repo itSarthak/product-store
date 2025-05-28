@@ -1,11 +1,16 @@
 pipeline {
   agent any
   environment {
+        DATABASE_URL = credentials('DATABASE_URL')
+        SERVER_PORT = credentials('SERVER_PORT')
+        DATABASE_TABLE=credentials('DATABASE_TABLE')
+
         RENDER_API_KEY = credentials('render-api-key')
         // Replace with the backend deploy hook you copied
         RENDER_BACKEND_DEPLOY_HOOK = credentials('render-backend-deploy-hook')
         // Replace with the frontend deploy hook you copied
         RENDER_FRONTEND_DEPLOY_HOOK = "https://api.render.com/deploy/srv-cv2udl2j1k6c739pp0lg?key=your-api-key"
+
     }
   options {
     skipDefaultCheckout()
