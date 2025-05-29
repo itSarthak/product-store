@@ -10,8 +10,8 @@ public class ProductRequest {
     @NotBlank(message = "Name is required")
     private String name;
 
-    @NotNull(message = "Number is required")
-    private double number;
+    @NotNull(message = "Price is required")
+    private double price;
 
     @NotBlank(message = "Image is required")
     private String image;
