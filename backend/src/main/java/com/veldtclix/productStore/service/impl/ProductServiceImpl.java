@@ -24,73 +24,51 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto createProduct(ProductDto productDto) {
-        try {
-            Product product = new Product();
-            BeanUtils.copyProperties(productDto, product);
-            product.setTimeStamp(Instant.now().toString());
-            Product saved = productRepository.save(product);
+        Product product = new Product();
+        BeanUtils.copyProperties(productDto, product);
+        product.setTimeStamp(Instant.now().toString());
+        Product saved = productRepository.save(product);
 
-            ProductDto responseDto = new ProductDto();
-            BeanUtils.copyProperties(saved, responseDto);
-            return responseDto;
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create a new Product "+ e.getMessage());
-        }
-
+        ProductDto responseDto = new ProductDto();
+        BeanUtils.copyProperties(saved, responseDto);
+        return responseDto;
     }
 
     @Override
     public List<ProductDto> getAllProducts() {
-        try {
-            return productRepository.findAll()
-                    .stream()
-                    .map(this::convertToDto)
-                    .collect(Collectors.toList());
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Failed to create a list all the Products "+ e.getMessage());
-        }
+        return productRepository.findAll()
+                .stream()
+                .map(this::convertToDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ProductDto getProductById(String id) {
-        try {
-            Product product = productRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
-            return convertToDto(product);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to get a product by its ID "+ e.getMessage());
-        }
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+        return convertToDto(product);
     }
 
     @Override
     public ProductDto updateProduct(String id, ProductDto productDto) {
-        try {
-            Product existing = productRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
 
-            existing.setName(productDto.getName());
-            existing.setPrice(productDto.getPrice());
-            existing.setImage(productDto.getImage());
-            existing.setTimeStamp(Instant.now().toString());
+        existing.setName(productDto.getName());
+        existing.setPrice(productDto.getPrice());
+        existing.setImage(productDto.getImage());
+        existing.setTimeStamp(Instant.now().toString());
 
-            Product updated = productRepository.save(existing);
-            return convertToDto(updated);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Failed to update a Product "+ e.getMessage());
-        }
-
+        Product updated = productRepository.save(existing);
+        return convertToDto(updated);
     }
 
     @Override
     public void deleteProduct(String id) {
-        try {
-            Product existing = productRepository.findById(id)
-                    .orElseThrow(() -> new ResourceNotFoundException("Product not found with ID: " + id));
-            productRepository.delete(existing);
-        } catch (RuntimeException e) {
-            throw new RuntimeException("Failed to delete a Product "+ e.getMessage());
+        if (!productRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Product not found with ID: " + id);
         }
-
+        productRepository.deleteById(id);
     }
 
     private ProductDto convertToDto(Product product) {
