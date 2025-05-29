@@ -1,24 +1,15 @@
 package com.veldtclix.productStore.service;
+import com.veldtclix.productStore.dto.ProductDto;
+import java.util.List;
 
-import com.veldtclix.productStore.modal.Product;
-import com.veldtclix.productStore.repository.ProductRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+public interface ProductService {
+    ProductDto createProduct(ProductDto productDto);
 
-@Service
-@Slf4j
-public class ProductService {
-    private final ProductRepository productRepository;
+    List<ProductDto> getAllProducts();
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    ProductDto getProductById(String id);
 
-    public Product saveProduct(Product product) {
-        try {
-            return productRepository.save(product);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to save Expense: "+ e.getMessage());
-        }
-    }
+    ProductDto updateProduct(String id, ProductDto productDto);
+
+    void deleteProduct(String id);
 }
