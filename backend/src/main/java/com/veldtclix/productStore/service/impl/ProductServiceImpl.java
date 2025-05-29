@@ -22,6 +22,15 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
 
+    /****
+     * Creates a new product using the provided data transfer object.
+     *
+     * Copies properties from the given ProductDto to a new Product entity, sets the current timestamp, saves it to the repository, and returns the saved product as a ProductDto.
+     *
+     * @param productDto the data transfer object containing product details
+     * @return the created product as a ProductDto
+     * @throws RuntimeException if product creation fails
+     */
     @Override
     public ProductDto createProduct(ProductDto productDto) {
         try {
@@ -39,6 +48,11 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    /**
+     * Retrieves all products from the repository and returns them as a list of DTOs.
+     *
+     * @return a list of all products represented as ProductDto objects
+     */
     @Override
     public List<ProductDto> getAllProducts() {
         try {
@@ -51,6 +65,14 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * Retrieves a product by its unique identifier and returns its data as a ProductDto.
+     *
+     * @param id the unique identifier of the product to retrieve
+     * @return the ProductDto representing the found product
+     * @throws ResourceNotFoundException if no product exists with the given ID
+     * @throws RuntimeException if an unexpected error occurs during retrieval
+     */
     @Override
     public ProductDto getProductById(String id) {
         try {
@@ -62,6 +84,14 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    /**
+     * Updates an existing product with new details provided in the DTO.
+     *
+     * @param id the unique identifier of the product to update
+     * @param productDto the data transfer object containing updated product information
+     * @return the updated product as a DTO
+     * @throws RuntimeException if the product is not found or the update fails
+     */
     @Override
     public ProductDto updateProduct(String id, ProductDto productDto) {
         try {
@@ -81,6 +111,14 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    /****
+     * Deletes a product with the specified ID.
+     *
+     * If the product does not exist, a ResourceNotFoundException is thrown.
+     * Wraps any runtime exceptions in a RuntimeException with a descriptive message.
+     *
+     * @param id the unique identifier of the product to delete
+     */
     @Override
     public void deleteProduct(String id) {
         try {
@@ -93,6 +131,12 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    /**
+     * Converts a Product entity to a ProductDto by copying its properties.
+     *
+     * @param product the Product entity to convert
+     * @return a ProductDto containing the copied properties from the given Product
+     */
     private ProductDto convertToDto(Product product) {
         ProductDto dto = new ProductDto();
         BeanUtils.copyProperties(product, dto);
