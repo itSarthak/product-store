@@ -1,43 +1,15 @@
 package com.veldtclix.productStore.service;
+import com.veldtclix.productStore.dto.ProductDto;
+import java.util.List;
 
-import com.veldtclix.productStore.dto.ProductRequest;
-import com.veldtclix.productStore.exception.ResourceNotFoundException;
-import com.veldtclix.productStore.model.Product;
-import com.veldtclix.productStore.repository.ProductRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
+public interface ProductService {
+    ProductDto createProduct(ProductDto productDto);
 
-import java.time.Instant;
+    List<ProductDto> getAllProducts();
 
-@Service
-@Slf4j
-public class ProductService {
-    private final ProductRepository productRepository;
+    ProductDto getProductById(String id);
 
-    public ProductService(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
+    ProductDto updateProduct(String id, ProductDto productDto);
 
-    public Product saveProduct(ProductRequest request) {
-        try {
-            log.info("Request forwarded to the Service layer");
-            Product product = new Product();
-            product.setName(request.getName());
-            product.setImage(request.getImage());
-            product.setPrice(request.getPrice());
-            product.setTimeStamp(Instant.now().toString());
-            return productRepository.save(product);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to save Product: "+ e.getMessage());
-        }
-    }
-    public boolean deleteProduct(String id) {
-        try {
-            Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product with id " + id + " not found"));
-            productRepository.delete(product);
-            return true;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
+    void deleteProduct(String id);
 }
