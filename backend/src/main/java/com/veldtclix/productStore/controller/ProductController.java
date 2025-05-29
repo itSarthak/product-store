@@ -1,7 +1,9 @@
 package com.veldtclix.productStore.controller;
 
-import com.veldtclix.productStore.modal.Product;
+import com.veldtclix.productStore.dto.ProductRequest;
+import com.veldtclix.productStore.model.Product;
 import com.veldtclix.productStore.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +22,9 @@ public class ProductController {
     }
 
     @PostMapping("/product")
-    public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
-        Product savedProduct = productService.saveProduct(product);
+    public ResponseEntity<Product> saveProduct(@Valid @RequestBody ProductRequest request) {
+        log.info("HTTP POST request received");
+        Product savedProduct = productService.saveProduct(request);
         return ResponseEntity.ok(savedProduct);
     }
 }

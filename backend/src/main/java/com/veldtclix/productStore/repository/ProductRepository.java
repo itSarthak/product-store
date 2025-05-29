@@ -1,6 +1,6 @@
 package com.veldtclix.productStore.repository;
 
-import com.veldtclix.productStore.modal.Product;
+import com.veldtclix.productStore.model.Product;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
