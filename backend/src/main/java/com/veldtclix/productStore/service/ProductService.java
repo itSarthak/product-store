@@ -27,7 +27,7 @@ public class ProductService {
             product.setTimeStamp(Instant.now().toString());
             return productRepository.save(product);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to save Expense: "+ e.getMessage());
+            throw new RuntimeException("Failed to save Product: "+ e.getMessage());
         }
     }
 }

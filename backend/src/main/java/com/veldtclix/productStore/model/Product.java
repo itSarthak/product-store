@@ -1,12 +1,11 @@
 package com.veldtclix.productStore.model;
 
-import com.mongodb.lang.Nullable;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document("Product")
+@Document(collection = "Product")
 public class Product {
     @Id
     private String id;
